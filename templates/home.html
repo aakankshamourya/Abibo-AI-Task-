@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome</title>
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: sans-serif;
+      color: #000000;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.5em;
+      margin-top: 5px;
+    }
+
+    h3 {
+      /* text-align: center; */
+      font-size: 1em;
+      margin-top: 5px;
+    }
+
+    form {
+      text-align: center;
+      margin: 0 auto;
+      width: 700px;
+    }
+
+    input {
+      border: 1px solid #ccc;
+      padding: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      background-color: #7952b3;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      max-width: 100%;
+      height: 30px;
+      border-radius: 5px;
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      text-align: center;
+    }
+
+    .loading .spinner {
+      width: 100px;
+      height: 100px;
+      border: 10px solid #000;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      background-color: #000;
+        position: relative;
+        display: inline-block;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+       /* Customizing the navigation bar */
+  .navbar {
+    background-color: #7952b3; /* Replace with your desired color */
+    color: #fff; /* Text color */
+    padding: 10px;
+    text-align: end;
+  }
+  
+  .navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <!-- <a href="/home">Home</a> -->
+    <a href="/chatbot-dev-nexus">Add more docs</a>
+    <!-- Add more navigation links here -->
+  </div>
+
+  <h1>Download a PDF File</h1>
+    <a href="/chatbot-dev-nexus/download" download>
+        <button>Download PDF</button>
+    </a>
+
+<!-- 
+    <h1>Clear the current uploaded DataBases</h1>
+    <a href='/clear_db'>
+      <button>Clear the DataBase</button></a> -->
+
+
+      <h1>Clear the current uploaded DataBases</h1>
+    <form action="/chatbot-dev-nexus/delete_all" method="post">
+        <input type="submit" value="Clear the DataBase">
+    </form>
+
+  <form  id="myForm" action="/chatbot-dev-nexus/answer" method="POST" onsubmit="return validateForm()">
+  
+    <div>
+    <h2>I am your chatbot-dev-nexus Policy Assistant, Please provide your question here:</h2>
+
+    <!-- <h4>The files in the knowledge base are as below</h4>
+  </div>
+    <ul>
+        {% for item in files %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul> -->
+
+    
+
+<br>
+    <!-- <input type="text" name="cust_query" id="cust_query" style="resize: both;"> -->
+    <h3>Your Question</h3>
+    <input type="text" name="cust_query" id="cust_query" style="resize: both; max-width: 100%; height: 30px; border-radius: 5px; block-size: auto;">
+    <input type="email" name="user_id" placeholder="Enter your email"><br>
+    Verbosity Control: <input type="radio", id="verbosity", name="verbosity", value="low">
+                       <label for="low">Low</label>
+      <input type="radio", id="verbosity", name="verbosity", value="medium">
+      <label for="medium">Medium</label>
+      <input type="radio", id="verbosity", name="verbosity", value="high">
+      <label for="high">High</label>
+
+    <br>
+
+    <!-- <label for="selection">Would you like to explore information beyond the existing knowledge base?    </label><br>
+        <input id="opt_yes" type="radio" name="selection" value="yes"> Yes<br>
+        <input id="opt_no" type="radio" name="selection" value="no"> No<br><br> -->
+
+     <!-- <label for="selection"> Please Select a GPT Model </label><br>
+        <input id="opt_yes" type="radio" name="selection" value="OpenAI GPT-3.5 turbo"> OpenAI GPT-3.5 turbo<br>
+        <input id="opt_no" type="radio" name="selection" value="OpenAI GPT-4"> OpenAI GPT-4<br>
+        <input id="opt_no" type="radio" name="selection" value="Azure OpenAI GPT-35"> Azure OpenAI GPT-35<br><br> -->
+
+    <hr>
+    <h3>Get your answer:</h3>
+    <input type="submit" value="Get Answer">
+  </form>
+
+  <div class="loading">
+    <div class="spinner"></div>
+  </div>
+
+
+  <h1>Download Files</h1>
+  <form action="/chatbot-dev-nexus/download_files" method="POST">
+      <label for="filename">Enter File Name from citations:</label>
+      <input type="text" id="filename" name="filename" required>
+      <button type="submit">Download</button>
+  </form>
+
+
+
+
+
+</body>
+
+<script>
+  
+ // When the form is submitted, show a loading animation
+ document.getElementById("myForm").addEventListener("submit", function() {
+    // Create a loading div
+    var loadingDiv = document.createElement("div");
+    loadingDiv.className = "loading";
+
+    // Append the loading div to the body
+    document.body.appendChild(loadingDiv);
+
+    // Start the loading animation
+    loadingDiv.classList.add("active");
+  });
+
+  // When the next page has loaded, remove the loading animation
+  window.addEventListener("load", function() {
+    // Get the loading div
+    var loadingDiv = document.querySelector(".loading");
+
+    // Remove the loading div from the DOM
+    loadingDiv.remove();
+  });
+
+
+
+
+</script>
+
+</html>

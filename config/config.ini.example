@@ -1,0 +1,73 @@
+# Copy this file to config.ini and fill in your values. Do not commit config.ini (it contains secrets).
+
+[files_location]
+usr_data_dir = ../chatbot-dev/config/user_data
+uploads_dir = ../chatbot-dev/uploads
+structured_dtype = csv,
+unstructured_dtype = pdf,docx,pptx
+exclude_file_names = default.txt, demo.csv
+
+[search]
+search_method = local
+search_mode = advanced
+AZURE_STORAGE_ACCOUNT = your-storage-account
+AZURE_STORAGE_CONTAINER = your-container
+AZURE_SEARCH_SERVICE = your-search-service
+AZURE_SEARCH_INDEX = your-index
+AZURE_SEARCH_KEY = your-search-key
+MAX_SECTION_LENGTH = 1000
+SENTENCE_SEARCH_LIMIT = 100
+SECTION_OVERLAP = 100
+
+[model]
+model_name = gpt-4o-mini
+temperature = 0
+batch_size = 32
+MAX_PROMPT_LENGTH = 3500
+openai_api_type = azure
+openai_api_key = your-openai-api-key
+openai_api_base = https://your-endpoint.openai.azure.com/
+openai_api_version = 2023-03-15-preview
+azure_openai_deployment_name = gpt-4o-mini
+
+[embeddings]
+chunk_size = 5000
+chunk_overlap = 100
+embeddings_model_type = azure
+embeddings_model_name = text-embedding-ada-002
+embeddings_api_version = 2023-03-15-preview
+embeddings_deployment_name = text_embedding_003
+embeddings_model_api_key = your-embeddings-api-key
+vector_store_type = faiss
+faiss_index_storeloc = Vector_DB/
+doc_search_score_threshold = 0.5
+
+[azure_embeddings]
+azure_embeddings_deployment = text-embedding-ada-002
+azure_embeddings_api_base = https://your-embeddings-endpoint.openai.azure.com/
+azure_embeddings_api_type = azure
+azure_embeddings_api_version = 2023-03-15-preview
+azure_embeddings_api_key = your-azure-embeddings-key
+
+[citation]
+dynamic_score_threshold = 70
+
+[deployment]
+port = 5000
+
+[telegram]
+# Or set TELEGRAM_BOT_TOKEN env var
+bot_token = your-telegram-bot-token
+
+[load_balancing]
+max_retries = 5
+
+[azure_llm_instances]
+model_name = gpt-4o-mini
+deployment_name = gpt-4o-mini
+n = 1
+temperature = 0
+openai_api_type = azure
+openai_api_base = https://your-endpoint.openai.azure.com/
+openai_api_version = 2023-03-15-preview
+openai_api_key = your-openai-api-key
