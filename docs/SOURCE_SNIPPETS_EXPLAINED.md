@@ -1,10 +1,4 @@
-# Source Snippets — How It Works & How to Explain in an Interview
 
-## What It Is (One-Liner for Interviewer)
-
-**"Each RAG answer shows which documents were used and a short snippet from each, so the user can see where the answer came from and verify or open the source."**
-
----
 
 ## End-to-End Flow (Technical)
 
@@ -37,7 +31,6 @@ So: **citations come from the RAG layer (which doc/chunk was used); the bot only
 
 ---
 
-## How to Check / Demo for the Interviewer
 
 1. **Run the bot** (from `chatbot-dev`):  
    `python telegram_bot.py`

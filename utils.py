@@ -66,45 +66,72 @@ def query_openai_mult(prompt, n_model):
         return None
                          
                          
+def _get_azure_llm_credentials():
+    """Get API key and endpoint: from env first, else first instance from config.ini."""
+    api_key = (os.environ.get("AZURE_OPENAI_API_KEY") or os.environ.get("AZURE_OPENAI_KEY") or "").strip()
+    api_base = (os.environ.get("AZURE_OPENAI_ENDPOINT") or "").strip().rstrip("/")
+    if api_key and api_base:
+        return api_key, api_base
+    # Use first Azure LLM instance from config (same as RAG path)
+    inst = CONFIG.get("azure_llm_instances") or {}
+    keys = inst.get("openai_api_key")
+    bases = inst.get("openai_api_base")
+    if keys and bases:
+        key = keys[0] if isinstance(keys, list) else keys
+        base = (bases[0] if isinstance(bases, list) else bases).rstrip("/")
+        if key and base:
+            return key, base
+    return "", ""
+
+
 def query_openai(prompt):
     try:
-        # Ask chatbot-dev-nexus GPT4
+        api_key, api_base = _get_azure_llm_credentials()
+        if not api_key or not api_base:
+            raise ValueError("Set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT, or configure config.ini [azure_llm_instances]")
+        inst = CONFIG.get("azure_llm_instances") or {}
+        deployment = (inst.get("deployment_name") or ["gpt-4o-mini"])
+        deployment = deployment[0] if isinstance(deployment, list) else deployment
+        api_version = (inst.get("openai_api_version") or ["2023-03-15-preview"])
+        api_version = api_version[0] if isinstance(api_version, list) else api_version
         response = openai.ChatCompletion.create(
-        engine="gpt-4-32k", # replace this value with the deployment name you chose when you deployed the asso>
-        n=1,
-        temperature=0,
-        api_type = "azure",
-        api_base = "https://sagar-m5i7au59-australiaeast.services.ai.azure.com",
-        api_version = "2023-03-15-preview",
-        api_key = os.environ.get("AZURE_OPENAI_API_KEY", ""),
-        # api_key = "f0d2333acxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", #testing
-        messages=[
-            {"role": "user", "content": prompt},
-        ])
-
+            engine=deployment,
+            n=1,
+            temperature=0,
+            api_type="azure",
+            api_base=api_base,
+            api_version=api_version,
+            api_key=api_key,
+            messages=[{"role": "user", "content": prompt}],
+        )
         return response.choices[0]['message']['content']
 
-    #Except block if the GPT-4 API fails
     except Exception as e:
         print("*******************")
         print(f"Got into an error when using the GPT-4 ---------- {e}")
         print("*******************")
-        textdata_response = query_openai_gpt35_backup(prompt)
+        return query_openai_gpt35_backup(prompt)
 
 def query_openai_gpt35_backup(prompt):
-    # Ask chatbot-dev-nexus GPT4
+    """Fallback LLM call using same credentials as query_openai (config or env)."""
+    api_key, api_base = _get_azure_llm_credentials()
+    if not api_key or not api_base:
+        raise ValueError("Set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT, or configure config.ini [azure_llm_instances]")
+    inst = CONFIG.get("azure_llm_instances") or {}
+    deployment = (inst.get("deployment_name") or ["gpt-4o-mini"])
+    deployment = deployment[0] if isinstance(deployment, list) else deployment
+    api_version = (inst.get("openai_api_version") or ["2023-03-15-preview"])
+    api_version = api_version[0] if isinstance(api_version, list) else api_version
     response = openai.ChatCompletion.create(
-    engine="SalesbuddyAIModel", # replace this value with the deployment name you chose when you deployed the asso>
-    n=1,
-    temperature=0,
-    api_type = "azure",
-    api_base = "https://salesbuddyai.openai.azure.com/",
-    api_version = "2023-03-15-preview",
-    api_key = os.environ.get("AZURE_OPENAI_API_KEY", ""),
-    messages=[
-        {"role": "user", "content": prompt},
-    ])
-
+        engine=deployment,
+        n=1,
+        temperature=0,
+        api_type="azure",
+        api_base=api_base,
+        api_version=api_version,
+        api_key=api_key,
+        messages=[{"role": "user", "content": prompt}],
+    )
     return response.choices[0]['message']['content']
 
 def _check_existance_filetype(documents_loc, file_type='pdf'):
