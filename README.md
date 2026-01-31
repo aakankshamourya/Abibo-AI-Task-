@@ -1,4 +1,19 @@
-<<<<<<< HEAD
+<img width="1907" height="892" alt="Screenshot 2026-01-31 211858" src="https://github.com/user-attachments/assets/8062078a-154e-4dab-994c-8dfa87773c03" />
+
+
+
+
+![WhatsApp Image 2026-01-31 at 10 24 27 PM(1)](https://github.com/user-attachments/assets/7a1a76d6-f416-4dd1-910d-da48885e2617)
+
+
+![WhatsApp Image 2026-01-31 at 10 24 27 PM](https://github.com/user-attachments/assets/ca6e46c0-7819-497b-b379-f826b1103cc4)
+
+
+
+
+
+
+
 # chatbot-dev
 
 Development Phase — Python 3.10
